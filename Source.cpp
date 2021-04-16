@@ -38,7 +38,7 @@ void LaunchSpotify(LPWSTR launcher) {
 
 bool safeDo(HRESULT hr, string message) {
     if( !SUCCEEDED(hr) ) {
-        ShowWindow(GetConsoleWindow(), 1);
+        ShowWindow(GetConsoleWindow(), SW_SHOW);
         wcout << "Error: " << message.c_str() << endl;
         return false;
     }
@@ -108,7 +108,7 @@ bool setAppId(LPWSTR path, LPWSTR name)
 }
 
 int main(int argc, LPWSTR* argv) {
-    ShowWindow(GetConsoleWindow(), 0);
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
 
     wchar_t appName[MAX_PATH], noControlLnk[MAX_PATH], spotifyLnk[MAX_PATH], spotifyExe[MAX_PATH], appData[MAX_PATH];
     wcsncpy_s(appName, L"Spotify", MAX_PATH);
@@ -120,15 +120,26 @@ int main(int argc, LPWSTR* argv) {
 
     if (parentD == 0) {
         if( argc > 1 ) {
-            wcsncpy_s(noControlLnk, argv[3], MAX_PATH);
+            wcout << "USAGE: SpotifyNoControl.exe [SpotifyNoControl.lnk] [Spotify.lnk] [spotify.exe]" << endl;
+            wcout << "  - [SpotifyNoControl.lnk] is the path to your shortcut pointing to SpotifyNoControl" << endl;
+            wcout << "    defaults to %appdata%\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\SpotifyNoControl.lnk" << endl;
+            wcout << "             or %appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\SpotifyNoControl.lnk" << endl;
+            wcout << "  - [Spotify.lnk] is the path to your shortcut pointing to Spotify" << endl;
+            wcout << "    defaults to %appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Spotify.lnk" << endl;
+            wcout << "  - [spotify.exe] is the path to Spotify executable" << endl;
+            wcout << "    defaults to %appdata%\\Spotify\\spotify.exe" << endl;
+        }
+
+        if( argc > 1 ) {
+            wcsncpy_s(noControlLnk, argv[1], MAX_PATH);
         }
         else {
-            // Default to taskbar shortcut
+            // Default to task bar shortcut
             lstrcpy(noControlLnk, appData);
             lstrcat(noControlLnk, L"\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\SpotifyNoControl.lnk");
         }
         if( !setAppId(noControlLnk, appName) ) {
-            // Retry with Start Menu shortcut
+            // Retry with start menu shortcut
             lstrcpy(noControlLnk, appData);
             lstrcat(noControlLnk, L"\\Microsoft\\Windows\\Start Menu\\Programs\\SpotifyNoControl.lnk");
             setAppId(noControlLnk, appName);
@@ -144,13 +155,12 @@ int main(int argc, LPWSTR* argv) {
         setAppId(spotifyLnk, appName);
 
         if (argc > 3) {
-            wcsncpy_s(appData, argv[1], MAX_PATH);
+            wcsncpy_s(appData, argv[3], MAX_PATH);
         } else {
             lstrcpy(spotifyExe, appData);
             lstrcat(spotifyExe, L"\\Spotify\\spotify.exe");
         }
 
-        wcout << spotifyExe << endl;
         LaunchSpotify(spotifyExe);
     }
 
