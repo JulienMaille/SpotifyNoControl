@@ -10,7 +10,8 @@ EXTERN_C const PROPERTYKEY DECLSPEC_SELECTANY PKEY_AppUserModel_ID =
 { { 0x9F4C2855, 0x9F79, 0x4B39,
 { 0xA8, 0xD0, 0xE1, 0xD4, 0x2D, 0xE1, 0xD5, 0xF3, } }, 5 };
 
-void LaunchSpotify(LPWSTR launcher) {
+void LaunchSpotify(LPWSTR launcher)
+{
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
 
@@ -36,7 +37,8 @@ void LaunchSpotify(LPWSTR launcher) {
     CloseHandle(pi.hThread);
 }
 
-bool safeDo(HRESULT hr, string message) {
+bool safeDo(HRESULT hr, string message)
+{
     if( !SUCCEEDED(hr) ) {
         ShowWindow(GetConsoleWindow(), SW_SHOW);
         wcout << "Error: " << message.c_str() << endl;
@@ -107,7 +109,8 @@ bool setAppId(LPWSTR path, LPWSTR name)
     return ok;
 }
 
-int main(int argc, LPWSTR* argv) {
+int main(int argc, LPWSTR* argv)
+{
     ShowWindow(GetConsoleWindow(), SW_HIDE);
 
     wchar_t appName[MAX_PATH], noControlLnk[MAX_PATH], spotifyLnk[MAX_PATH], spotifyExe[MAX_PATH], appData[MAX_PATH];

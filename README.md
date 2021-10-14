@@ -1,3 +1,5 @@
+## This no longer works on version 1.1.68.628 and above
+
 # SpotifyNoControl
 Realated to https://github.com/morpheusthewhite/spicetify-themes/tree/legacy/Dribbblish
 
